@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copa do Mundo FIFA 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-content">
+    <div class="loader-trophy">🏆</div>
+    <div class="loader-bar"><div></div></div>
+    <p>Carregando...</p>
+  </div>
+</div>
+
+<div id="progressBar"></div>
+
+<header class="header" id="header">
+  <nav class="navbar">
+    <a href="#home" class="nav-logo">🏆 <span>FIFA</span> 2026</a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Início</a></li>
+      <li><a href="#groups" class="nav-link"><i class="fas fa-table"></i> Grupos</a></li>
+      <li><a href="#bracket" class="nav-link"><i class="fas fa-project-diagram"></i> Mata-Mata</a></li>
+      <li><a href="#ranking" class="nav-link"><i class="fas fa-trophy"></i> Ranking</a></li>
+      <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="themeToggle" class="theme-btn" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <div class="hero-overlay"></div>
+    <div class="particles" id="particles"></div>
+    <div class="hero-content">
+      <div class="hero-badge reveal">Bem-vindo ao Mundial</div>
+      <h1 class="hero-title reveal">Copa do Mundo <span>FIFA</span></h1>
+      <p class="hero-sub reveal">Acompanhe grupos, mata-mata, ranking FIFA e todas as seleções em um só lugar.</p>
+      <div class="hero-countdown reveal" id="countdown">
+        <div><span id="cdDays">00</span><small>Dias</small></div>
+        <div><span id="cdHours">00</span><small>Horas</small></div>
+        <div><span id="cdMins">00</span><small>Minutos</small></div>
+        <div><span id="cdSecs">00</span><small>Segundos</small></div>
+      </div>
+      <div class="hero-btns reveal">
+        <a href="#groups" class="btn btn-primary"><i class="fas fa-table"></i> Ver Grupos</a>
+        <a href="#bracket" class="btn btn-outline"><i class="fas fa-project-diagram"></i> Mata-Mata</a>
+        <a href="#ranking" class="btn btn-outline"><i class="fas fa-trophy"></i> Ranking</a>
+      </div>
+      <div class="hero-scroll"><span>Role para baixo</span><i class="fas fa-chevron-down"></i></div>
+    </div>
+  </section>
+
+  <section id="groups" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-table"></i> Grupos</span>
+        <h2>Fase de <span>Grupos</span></h2>
+        <p>48 seleções divididas em 12 grupos. Avançam os 2 primeiros + 8 melhores 3º colocados.</p>
+      </div>
+      <div class="groups-grid" id="groupsContainer"></div>
+    </div>
+  </section>
+
+  <section id="bracket" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-project-diagram"></i> Mata-Mata</span>
+        <h2>Fase <span>Eliminatória</span></h2>
+        <p>32 seleções na disputa pelo título. Confira os confrontos e resultados.</p>
+      </div>
+      <div class="bracket-controls reveal">
+        <div class="bracket-legend">
+          <span><span class="dot won"></span> Confirmado</span>
+          <span><span class="dot pending-dot"></span> A definir</span>
+        </div>
+      </div>
+      <div id="bracketContainer" class="bracket-wrapper reveal"></div>
+
+      <div class="match-list reveal">
+        <h3><i class="fas fa-list"></i> Todos os Confrontos — 32-avos de Final</h3>
+        <div id="matchList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ranking" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-trophy"></i> Ranking</span>
+        <h2>Ranking Mundial <span>FIFA</span></h2>
+        <p>Classificação masculina atualizada. Pesquise, filtre por continente e veja a pontuação.</p>
+      </div>
+
+      <div class="ranking-tools reveal">
+        <div class="ranking-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="rankingSearch" placeholder="Pesquisar país...">
+        </div>
+        <div class="ranking-filters" id="rankingFilters"></div>
+        <div class="ranking-sort">
+          <button class="sort-btn active" data-sort="pos"><i class="fas fa-sort-numeric-down"></i> Posição</button>
+          <button class="sort-btn" data-sort="points"><i class="fas fa-sort-amount-down"></i> Pontos</button>
+        </div>
+      </div>
+
+      <div class="ranking-table-wrap reveal" id="rankingContainer"></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-images"></i> Galeria</span>
+        <h2>Galeria da <span>Copa</span></h2>
+        <p>Momentos históricos das edições anteriores do Mundial.</p>
+      </div>
+      <div class="gallery-grid reveal" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <section id="timeline" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-clock"></i> História</span>
+        <h2>Linha do Tempo das <span>Copas</span></h2>
+        <p>Relembre todas as edições e campeões do maior evento esportivo do planeta.</p>
+      </div>
+      <div class="timeline reveal" id="timelineContainer"></div>
+    </div>
+  </section>
+
+  <section id="stats" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-chart-bar"></i> Estatísticas</span>
+        <h2>Estatísticas das <span>Seleções</span></h2>
+        <p>Dados de desempenho de cada seleção na fase de grupos.</p>
+      </div>
+      <div class="stats-grid reveal" id="statsContainer"></div>
+    </div>
+  </section>
+
+  <section id="curiosities" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-lightbulb"></i> Curiosidades</span>
+        <h2>Curiosidades da <span>Copa</span></h2>
+        <p>Fatos interessantes sobre a história do torneio.</p>
+      </div>
+      <div class="curiosities-grid reveal" id="curiositiesContainer"></div>
+    </div>
+  </section>
+
+  <section id="contact" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge"><i class="fas fa-envelope"></i> Contato</span>
+        <h2>Entre em <span>Contato</span></h2>
+        <p>Tem sugestões ou encontrou algum problema? Mande uma mensagem.</p>
+      </div>
+      <div class="contact-wrapper reveal">
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <input type="text" placeholder="Seu nome" required>
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Seu e-mail" required>
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Sua mensagem" required></textarea>
+            <i class="fas fa-comment"></i>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+        </form>
+        <div class="contact-info">
+          <div><i class="fas fa-map-marker-alt"></i><span>Brasil</span></div>
+          <div><i class="fas fa-envelope"></i><span>contato@copadomundo2026.com</span></div>
+          <div><i class="fas fa-globe"></i><span>www.copadomundo2026.com</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>🏆 Copa FIFA 2026</h3>
+        <p>Portal não oficial com informações sobre a Copa do Mundo FIFA 2026. Projeto educacional.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Navegação</h4>
+        <a href="#home">Início</a>
+        <a href="#groups">Grupos</a>
+        <a href="#bracket">Mata-Mata</a>
+        <a href="#ranking">Ranking</a>
+      </div>
+      <div class="footer-links">
+        <h4>Informações</h4>
+        <a href="#">Sobre</a>
+        <a href="#">Privacidade</a>
+        <a href="#">Termos</a>
+        <a href="#contact">Contato</a>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Receba notícias</h4>
+        <p>Cadastre-se para receber atualizações.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Seu e-mail">
+          <button><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> Copa do Mundo FIFA 2026 — Projeto educacional. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<button id="backToTop" class="back-to-top" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+<div id="teamModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
