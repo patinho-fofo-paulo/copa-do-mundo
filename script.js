@@ -3,63 +3,147 @@
 // ==========================================
 
 // BANDEIRAS
-const flags = {
-  'Argentina':'🇦🇷','Brasil':'🇧🇷','Colômbia':'🇨🇴','Equador':'🇪🇨',
-  'Paraguai':'🇵🇾','Uruguai':'🇺🇾','Canadá':'🇨🇦',
-  'Estados Unidos':'🇺🇸','México':'🇲🇽','Curaçao':'🇨🇼',
-  'Haiti':'🇭🇹','Panamá':'🇵🇦','Arábia Saudita':'🇸🇦',
-  'Austrália':'🇦🇺','Catar':'🇶🇦','Coreia do Sul':'🇰🇷',
-  'Irã':'🇮🇷','Iraque':'🇮🇶','Japão':'🇯🇵','Jordânia':'🇯🇴',
-  'Uzbequistão':'🇺🇿','África do Sul':'🇿🇦','Argélia':'🇩🇿',
-  'Cabo Verde':'🇨🇻','Costa do Marfim':'🇨🇮','Egito':'🇪🇬',
-  'Gana':'🇬🇭','Marrocos':'🇲🇦','RD Congo':'🇨🇩',
-  'República Democrática do Congo':'🇨🇩','Senegal':'🇸🇳',
-  'Tunísia':'🇹🇳','Nova Zelândia':'🇳🇿','Alemanha':'🇩🇪',
-  'Áustria':'🇦🇹','Bélgica':'🇧🇪',
-  'Bósnia e Herzegovina':'🇧🇦','Bósnia':'🇧🇦',
-  'Croácia':'🇭🇷','Escócia':'🏴','Espanha':'🇪🇸',
-  'França':'🇫🇷','Holanda':'🇳🇱','Inglaterra':'🏴',
-  'Noruega':'🇳🇴','Portugal':'🇵🇹',
-  'República Tcheca':'🇨🇿','Suécia':'🇸🇪',
-  'Suíça':'🇨🇭','Turquia':'🇹🇷','Itália':'🇮🇹',
-  'Dinamarca':'🇩🇰','Ucrânia':'🇺🇦','Sérvia':'🇷🇸',
-  'Camarões':'🇨🇲'
+const countryCodes = {
+  'Argentina':'ARG','Brasil':'BRA','Colômbia':'COL','Equador':'ECU',
+  'Paraguai':'PAR','Uruguai':'URU','Canadá':'CAN',
+  'Estados Unidos':'USA','México':'MEX','Curaçao':'CUW',
+  'Haiti':'HAI','Panamá':'PAN','Arábia Saudita':'KSA',
+  'Austrália':'AUS','Catar':'QAT','Coreia do Sul':'KOR',
+  'Irã':'IRN','Iraque':'IRQ','Japão':'JPN','Jordânia':'JOR',
+  'Uzbequistão':'UZB','África do Sul':'RSA','Argélia':'ALG',
+  'Cabo Verde':'CPV','Costa do Marfim':'CIV','Egito':'EGY',
+  'Gana':'GHA','Marrocos':'MAR','RD Congo':'COD',
+  'República Democrática do Congo':'COD','Senegal':'SEN',
+  'Tunísia':'TUN','Nova Zelândia':'NZL','Alemanha':'GER',
+  'Áustria':'AUT','Bélgica':'BEL',
+  'Bósnia e Herzegovina':'BIH','Bósnia':'BIH',
+  'Croácia':'CRO','Escócia':'SCO','Espanha':'ESP',
+  'França':'FRA','Holanda':'NED','Inglaterra':'ENG',
+  'Noruega':'NOR','Portugal':'POR',
+  'República Tcheca':'CZE','Suécia':'SWE',
+  'Suíça':'SUI','Turquia':'TUR','Itália':'ITA',
+  'Dinamarca':'DEN','Ucrânia':'UKR','Sérvia':'SRB',
+  'Camarões':'CMR',
+  'Chile':'CHI','Alemanha Ocidental':'FRG','Rússia':'RUS',
+  'Coreia do Sul/Japão':'KOR/JPN',
+  'Canadá, México e Estados Unidos':'CAN/MEX/USA'
 };
 
-const getFlag = team => flags[team] || '🏳️';
+const getCode = team => countryCodes[team] || '';
+
+// Todas as seleções aparecem pela sigla de 3 letras (ex.: BRA, ESP, ENG).
+const flagHtml = team => {
+  const code = getCode(team);
+  return code ? `<span class="flag-code">${code}</span>` : '';
+};
 
 // ==========================================
 // GRUPOS
 // ==========================================
 
+// Classificação final da fase de grupos da Copa do Mundo 2026.
+// Fonte: FIFA / Wikipedia (tabelas oficiais dos grupos).
+// w = vitórias, d = empates, l = derrotas, gf = gols feitos, ga = gols sofridos.
+const groupTeam = (name, w, d, l, gf, ga) => ({
+  name,
+  pld: w + d + l,
+  w,
+  d,
+  l,
+  gf,
+  ga,
+  gd: gf - ga,
+  pts: w * 3 + d
+});
+
 const groups = [
-  { name:'A', teams:['México','África do Sul','Coreia do Sul','República Tcheca'] },
-  { name:'B', teams:['Canadá','Bósnia e Herzegovina','Catar','Suíça'] },
-  { name:'C', teams:['Brasil','Marrocos','Haiti','Escócia'] },
-  { name:'D', teams:['Estados Unidos','Paraguai','Austrália','Turquia'] },
-  { name:'E', teams:['Alemanha','Curaçao','Costa do Marfim','Equador'] },
-  { name:'F', teams:['Holanda','Japão','Suécia','Tunísia'] },
-  { name:'G', teams:['Bélgica','Egito','Irã','Nova Zelândia'] },
-  { name:'H', teams:['Espanha','Cabo Verde','Arábia Saudita','Uruguai'] },
-  { name:'I', teams:['França','Senegal','Iraque','Noruega'] },
-  { name:'J', teams:['Argentina','Argélia','Áustria','Jordânia'] },
-  { name:'K', teams:['Portugal','RD Congo','Uzbequistão','Colômbia'] },
-  { name:'L', teams:['Inglaterra','Croácia','Gana','Panamá'] }
+  { name:'A', teams:[
+    groupTeam('México',3,0,0,6,0),
+    groupTeam('África do Sul',1,1,1,2,3),
+    groupTeam('Coreia do Sul',1,0,2,2,3),
+    groupTeam('República Tcheca',0,1,2,2,6)
+  ]},
+  { name:'B', teams:[
+    groupTeam('Suíça',2,1,0,7,3),
+    groupTeam('Canadá',1,1,1,8,3),
+    groupTeam('Bósnia e Herzegovina',1,1,1,5,6),
+    groupTeam('Catar',0,1,2,2,10)
+  ]},
+  { name:'C', teams:[
+    groupTeam('Brasil',2,1,0,7,1),
+    groupTeam('Marrocos',2,1,0,6,3),
+    groupTeam('Escócia',1,0,2,1,4),
+    groupTeam('Haiti',0,0,3,2,8)
+  ]},
+  { name:'D', teams:[
+    groupTeam('Estados Unidos',2,0,1,8,4),
+    groupTeam('Austrália',1,1,1,2,2),
+    groupTeam('Paraguai',1,1,1,2,4),
+    groupTeam('Turquia',1,0,2,3,5)
+  ]},
+  { name:'E', teams:[
+    groupTeam('Alemanha',2,0,1,10,4),
+    groupTeam('Costa do Marfim',2,0,1,4,2),
+    groupTeam('Equador',1,1,1,2,2),
+    groupTeam('Curaçao',0,1,2,1,9)
+  ]},
+  { name:'F', teams:[
+    groupTeam('Holanda',2,1,0,10,4),
+    groupTeam('Japão',1,2,0,7,3),
+    groupTeam('Suécia',1,1,1,7,7),
+    groupTeam('Tunísia',0,0,3,2,12)
+  ]},
+  { name:'G', teams:[
+    groupTeam('Bélgica',1,2,0,6,2),
+    groupTeam('Egito',1,2,0,5,3),
+    groupTeam('Irã',0,3,0,3,3),
+    groupTeam('Nova Zelândia',0,1,2,4,10)
+  ]},
+  { name:'H', teams:[
+    groupTeam('Espanha',2,1,0,5,0),
+    groupTeam('Cabo Verde',0,3,0,2,2),
+    groupTeam('Uruguai',0,2,1,3,4),
+    groupTeam('Arábia Saudita',0,2,1,1,5)
+  ]},
+  { name:'I', teams:[
+    groupTeam('França',3,0,0,10,2),
+    groupTeam('Noruega',2,0,1,8,7),
+    groupTeam('Senegal',1,0,2,8,6),
+    groupTeam('Iraque',0,0,3,1,12)
+  ]},
+  { name:'J', teams:[
+    groupTeam('Argentina',3,0,0,8,1),
+    groupTeam('Áustria',1,1,1,6,6),
+    groupTeam('Argélia',1,1,1,5,7),
+    groupTeam('Jordânia',0,0,3,3,8)
+  ]},
+  { name:'K', teams:[
+    groupTeam('Colômbia',2,1,0,4,1),
+    groupTeam('Portugal',1,2,0,6,1),
+    groupTeam('RD Congo',1,1,1,4,3),
+    groupTeam('Uzbequistão',0,0,3,2,11)
+  ]},
+  { name:'L', teams:[
+    groupTeam('Inglaterra',2,1,0,6,2),
+    groupTeam('Croácia',2,0,1,5,5),
+    groupTeam('Gana',1,1,1,2,2),
+    groupTeam('Panamá',0,0,3,0,4)
+  ]}
 ];
 
 // ==========================================
 // RANKING FIFA
-// Pontuações não informadas: não foram inventadas.
+// Pontuação oficial do ranking masculino de 7 de outubro de 2026.
 // ==========================================
 
 const ranking = [
-  {pos:1, team:'Espanha', conf:'UEFA', points:null},
-  {pos:2, team:'Argentina', conf:'CONMEBOL', points:null},
-  {pos:3, team:'França', conf:'UEFA', points:null},
-  {pos:4, team:'Inglaterra', conf:'UEFA', points:null},
-  {pos:5, team:'Portugal', conf:'UEFA', points:null},
-  {pos:6, team:'Brasil', conf:'CONMEBOL', points:null},
-  {pos:7, team:'Marrocos', conf:'CAF', points:null}
+  {pos:1, team:'Espanha', conf:'UEFA', points:2011.57},
+  {pos:2, team:'Argentina', conf:'CONMEBOL', points:1972.80},
+  {pos:3, team:'França', conf:'UEFA', points:1958.86},
+  {pos:4, team:'Inglaterra', conf:'UEFA', points:1925.59},
+  {pos:5, team:'Portugal', conf:'UEFA', points:1807.69},
+  {pos:6, team:'Brasil', conf:'CONMEBOL', points:1806.51},
+  {pos:7, team:'Marrocos', conf:'CAF', points:1805.34}
 ];
 
 const confNames = {
@@ -254,9 +338,9 @@ const galleryItems = [
     desc:'Canadá, México e Estados Unidos recebem a competição.'
   },
   {
-    icon:'🥇',
-    title:'O caminho até o título',
-    desc:'Confira os resultados da fase eliminatória.'
+    icon:'👟',
+    title:'Artilheiro da Copa',
+    desc:'Mbappé terminou a competição como artilheiro, com 22 gols.'
   },
   {
     icon:'🇦🇷',
@@ -269,9 +353,28 @@ const galleryItems = [
 // RENDERIZAR GRUPOS
 // ==========================================
 
+// Os 8 melhores terceiros colocados também avançam para o mata-mata.
+// Critérios: pontos, saldo de gols e gols marcados.
+function getBestThirds() {
+  const thirds = groups
+    .map(group => ({ group: group.name, team: group.teams[2] }))
+    .filter(item => item.team);
+
+  thirds.sort((a, b) =>
+    b.team.pts - a.team.pts ||
+    b.team.gd - a.team.gd ||
+    b.team.gf - a.team.gf ||
+    a.group.localeCompare(b.group)
+  );
+
+  return new Set(thirds.slice(0, 8).map(item => item.team.name));
+}
+
 function renderGroups() {
   const container = document.getElementById('groupsContainer');
   if (!container) return;
+
+  const bestThirds = getBestThirds();
 
   container.innerHTML = groups.map(group => `
     <div class="group-card reveal">
@@ -282,20 +385,33 @@ function renderGroups() {
 
       <div class="group-table">
         <div class="group-table-head">
+          <span>#</span>
           <span>Seleção</span>
           <span>Pts</span>
         </div>
 
-        ${group.teams.map(team => `
-          <div class="group-team ${team === 'Espanha' ? 'highlight-row' : ''}">
-            <span class="name">
-              <span class="flag">${getFlag(team)}</span>
-              ${team}
-              ${team === 'Espanha' ? '🏆' : ''}
-            </span>
-            <span class="pts">—</span>
-          </div>
-        `).join('')}
+        ${group.teams.map((team, index) => {
+          const isThird = index === 2 && bestThirds.has(team.name);
+          const classes = [
+            'group-team',
+            index < 2 ? 'qualified' : '',
+            isThird ? 'third-qualified' : '',
+            team.name === 'Espanha' ? 'highlight-row' : ''
+          ].filter(Boolean).join(' ');
+
+          return `
+            <div class="${classes}"
+                 title="${team.pld} jogos · ${team.w}V ${team.d}E ${team.l}D · ${team.gf} GP, ${team.ga} GC · SG ${team.gd > 0 ? '+' : ''}${team.gd}${isThird ? ' · classificado entre os 8 melhores terceiros' : ''}">
+              <span class="pos">${index + 1}</span>
+              <span class="name">
+                <span class="flag">${flagHtml(team.name)}</span>
+                ${team.name}
+                ${team.name === 'Espanha' ? '🏆' : ''}
+              </span>
+              <span class="pts">${team.pts}</span>
+            </div>
+          `;
+        }).join('')}
       </div>
     </div>
   `).join('');
@@ -324,14 +440,14 @@ function renderBracket() {
             return `
               <div class="bracket-match ${round.name === 'Grande Final' ? 'final-match' : ''}">
                 <div class="b-team ${winner === team1 ? 'winner' : ''}">
-                  <span class="name">${getFlag(team1)} ${team1}</span>
+                  <span class="name">${flagHtml(team1)} ${team1}</span>
                   <span class="score">${score1}</span>
                 </div>
 
                 <div class="vs">vs</div>
 
                 <div class="b-team ${winner === team2 ? 'winner' : ''}">
-                  <span class="name">${getFlag(team2)} ${team2}</span>
+                  <span class="name">${flagHtml(team2)} ${team2}</span>
                   <span class="score">${score2}</span>
                 </div>
 
@@ -364,14 +480,14 @@ function renderMatchList() {
           <span class="m-date">${match.date}</span>
 
           <div class="m-teams">
-            <span class="flag">${getFlag(match.t1)}</span>
+            <span class="flag">${flagHtml(match.t1)}</span>
             ${match.t1}
 
             <strong class="m-result">
               ${match.s1} - ${match.s2}
             </strong>
 
-            <span class="flag">${getFlag(match.t2)}</span>
+            <span class="flag">${flagHtml(match.t2)}</span>
             ${match.t2}
           </div>
 
@@ -439,7 +555,7 @@ function renderRanking() {
 
             <td>
               <div class="team-cell">
-                <span class="flag">${getFlag(item.team)}</span>
+                <span class="flag">${flagHtml(item.team)}</span>
                 <span class="name">${item.team}</span>
               </div>
             </td>
@@ -449,7 +565,7 @@ function renderRanking() {
             </td>
 
             <td class="pts-cell">
-              ${item.points === null ? 'Não informado' : item.points}
+              ${item.points === null ? 'Não informado' : item.points.toFixed(2)}
             </td>
           </tr>
         `).join('')}
@@ -457,8 +573,8 @@ function renderRanking() {
     </table>
 
     <p class="ranking-footnote">
-      Ranking resumido do projeto. As pontuações não foram informadas.
-      Consulte a FIFA para conferir a classificação oficial atualizada.
+      Ranking Mundial FIFA de 7 de outubro de 2026 · Fonte: FIFA.
+      Clique em uma seleção para ver os detalhes.
     </p>
   `;
 }
@@ -550,11 +666,11 @@ function renderTimeline() {
         <div class="tl-year">${item.year}</div>
 
         <div class="tl-title">
-          ${getFlag(item.host)} ${item.host}
+          ${flagHtml(item.host)} ${item.host}
         </div>
 
         <div class="tl-desc">
-          Campeão: ${getFlag(item.champion)} ${item.champion}
+          Campeão: ${flagHtml(item.champion)} ${item.champion}
         </div>
       </div>
 
@@ -591,11 +707,12 @@ function openModal(team) {
   if (!modal || !body) return;
 
   const rankingItem = ranking.find(item => item.team === team);
-  const group = groups.find(item => item.teams.includes(team));
+  const group = groups.find(item => item.teams.some(t => t.name === team));
+  const groupTeam = group ? group.teams.find(t => t.name === team) : null;
 
   body.innerHTML = `
     <div style="text-align:center;margin-bottom:1rem">
-      <div style="font-size:4rem">${getFlag(team)}</div>
+      <div style="font-size:4rem">${flagHtml(team)}</div>
 
       <h2>${team}</h2>
 
@@ -605,6 +722,10 @@ function openModal(team) {
 
       ${group
         ? `<p>Grupo ${group.name} · Copa do Mundo 2026</p>`
+        : ''}
+
+      ${groupTeam
+        ? `<p>${groupTeam.pts} pts na fase de grupos · ${groupTeam.w}V ${groupTeam.d}E ${groupTeam.l}D</p>`
         : ''}
 
       ${team === 'Espanha'
